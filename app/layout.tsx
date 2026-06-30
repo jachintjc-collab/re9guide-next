@@ -16,7 +16,7 @@ const cinzel = Cinzel({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://re9guide.it.com'),
+  metadataBase: new URL('https://www.re9guide.it.com'),
   title: {
     default: 'REQUIEM ARCHIVE — RE9 Survival Horror Walkthroughs & Guides',
     template: '%s · re9guide.it.com',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: 'REQUIEM ARCHIVE — RE9 Survival Horror Walkthroughs & Guides',
     description:
       'Independent fan-made guide for Resident Evil: Requiem (RE9) — boss strategies, collectibles, weapons, trophies, lore.',
-    url: 'https://re9guide.it.com',
+    url: 'https://www.re9guide.it.com',
     siteName: 're9guide.it.com',
     locale: 'en_US',
     type: 'website',

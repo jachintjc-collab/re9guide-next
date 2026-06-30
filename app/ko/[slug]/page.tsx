@@ -20,20 +20,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: doc.title,
     description: doc.description,
     alternates: {
-      canonical: doc.canonical || `https://re9guide.it.com/ko/${slug}`,
+      // 不再使用 MDX frontmatter 的旧 .html canonical，强制 Next.js 自动生成正确格式
+      canonical: `/ko/${slug}/`,
       languages: {
-        en: `/${slug}`,
-        ko: `/ko/${slug}`,
+        en: `/${slug}/`,
+        ko: `/ko/${slug}/`,
       },
     },
     openGraph: doc.ogImage
       ? {
           title: doc.title,
           description: doc.description,
+          url: `/ko/${slug}/`,
           locale: 'ko_KR',
           images: [{ url: doc.ogImage, width: 1200, height: 630 }],
         }
-      : { locale: 'ko_KR' },
+      : {
+          title: doc.title,
+          description: doc.description,
+          url: `/ko/${slug}/`,
+          locale: 'ko_KR',
+        },
   }
 }
 

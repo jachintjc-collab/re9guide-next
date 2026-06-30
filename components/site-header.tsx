@@ -5,11 +5,11 @@ import { Biohazard, Menu, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const NAV = [
-  { label: "Walkthroughs", href: "#areas" },
-  { label: "Tier List", href: "#tiers" },
-  { label: "Guides", href: "#featured" },
-  { label: "Maps", href: "#areas" },
-  { label: "Database", href: "#featured" },
+  { label: "Walkthroughs", href: "/wrenwood-complete-area-guide/" },
+  { label: "Tier List", href: "/best-weapons-tier-list/" },
+  { label: "Characters", href: "/character-eveline-deep-profile/" },
+  { label: "Maps", href: "/wrenwood-interactive-map/" },
+  { label: "About", href: "/about/" },
 ]
 
 export function SiteHeader() {
@@ -18,7 +18,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <a href="#top" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-sm border border-primary/50 bg-primary/15 text-primary">
             <Biohazard className="size-5 animate-flicker" aria-hidden="true" />
           </span>

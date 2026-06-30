@@ -3,15 +3,30 @@ import { Biohazard, Globe, MessageCircle, Rss } from "lucide-react"
 const COLUMNS = [
   {
     title: "Walkthroughs",
-    links: ["Wrenwood", "Rhodes Hill", "Raccoon City", "ARK Facility"],
+    links: [
+      { label: "Wrenwood", href: "/wrenwood-complete-area-guide/" },
+      { label: "Rhodes Hill", href: "/rhodes-hill-complete-area-guide/" },
+      { label: "Raccoon City", href: "/raccoon-city-complete-area-guide/" },
+      { label: "ARK Facility", href: "/ark-facility-complete-area-guide/" },
+    ],
   },
   {
     title: "Resources",
-    links: ["Enemy Tier List", "Item Database", "Interactive Maps", "Achievements"],
+    links: [
+      { label: "Boss Tier List", href: "/re9-best-bosses-ranked-tier-list/" },
+      { label: "Charm Tier List", href: "/re9-all-charms-ranked-tier-list/" },
+      { label: "Interactive Maps", href: "/wrenwood-interactive-map/" },
+      { label: "Trophies Guide", href: "/trophy-collector/" },
+    ],
   },
   {
-    title: "Community",
-    links: ["Forums", "Discord", "Submit a Guide", "Contributors"],
+    title: "Info",
+    links: [
+      { label: "About", href: "/about/" },
+      { label: "Privacy Policy", href: "/privacy/" },
+      { label: "Terms of Service", href: "/terms/" },
+      { label: "Contact", href: "mailto:contact@re9guide.it.com" },
+    ],
   },
 ]
 
@@ -59,12 +74,12 @@ export function SiteFooter() {
               </p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -79,10 +94,10 @@ export function SiteFooter() {
             affiliated with Capcom.
           </p>
           <div className="flex items-center gap-5">
-            <a href="#" className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground">
+            <a href="/privacy/" className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground">
               Privacy
             </a>
-            <a href="#" className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground">
+            <a href="/terms/" className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground">
               Terms
             </a>
           </div>
