@@ -9,6 +9,7 @@ const FEATURED = [
     title: "Defeating The Requiem — Phase 3 Strategy",
     desc: "Ammo conservation, the safe-spot loop, and the exact stagger window to end the final encounter.",
     read: "12 min read",
+    href: "/re9-best-boss-strategy/",
     featured: true,
   },
   {
@@ -17,6 +18,7 @@ const FEATURED = [
     title: "Rhodes Hill Crest Puzzle Solution",
     desc: "Every dial combination and the hidden lever behind the portrait hall.",
     read: "5 min read",
+    href: "/all-quartz-puzzle-solutions/",
   },
   {
     icon: Heart,
@@ -24,6 +26,7 @@ const FEATURED = [
     title: "Herb & Healing Route — No Damage Run",
     desc: "Where to farm green herbs and which fights to skip entirely.",
     read: "8 min read",
+    href: "/re9-insanity-preparation-checklist/",
   },
   {
     icon: Flame,
@@ -31,6 +34,7 @@ const FEATURED = [
     title: "Best Early-Game Weapon Upgrades",
     desc: "Prioritize these three upgrades before reaching Raccoon City.",
     read: "6 min read",
+    href: "/re9-best-weapon/",
   },
 ]
 
@@ -43,12 +47,14 @@ export function FeaturedGuides() {
           title="Editor's Survival Picks"
           description="Hand-selected deep dives that will keep you breathing through the worst the Requiem throws at you."
           action={
-            <Button
-              variant="outline"
-              className="border-border bg-card/40 font-mono text-xs uppercase tracking-widest hover:bg-secondary"
-            >
-              View All Guides
-            </Button>
+            <a href="/tier-lists/">
+              <Button
+                variant="outline"
+                className="border-border bg-card/40 font-mono text-xs uppercase tracking-widest hover:bg-secondary"
+              >
+                View All Guides
+              </Button>
+            </a>
           }
         />
 
@@ -57,7 +63,7 @@ export function FeaturedGuides() {
           {FEATURED.filter((g) => g.featured).map((g) => (
             <a
               key={g.title}
-              href="#"
+              href={g.href}
               className="group relative flex flex-col justify-between overflow-hidden rounded-md border border-primary/40 bg-primary/10 p-6 lg:row-span-2"
             >
               <div>
@@ -89,7 +95,7 @@ export function FeaturedGuides() {
             {FEATURED.filter((g) => !g.featured).map((g) => (
               <a
                 key={g.title}
-                href="#"
+                href={g.href}
                 className="group flex flex-col rounded-md border border-border bg-card p-5 transition-colors hover:border-primary/50"
               >
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">

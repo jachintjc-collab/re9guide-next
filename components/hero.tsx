@@ -45,21 +45,25 @@ export function Hero() {
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Button
-              size="lg"
-              className="bg-primary font-mono text-xs uppercase tracking-widest text-primary-foreground hover:bg-primary/85"
-            >
-              <Play className="size-4" />
-              Start Walkthrough
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-border bg-card/40 font-mono text-xs uppercase tracking-widest text-foreground hover:bg-secondary"
-            >
-              <BookOpen className="size-4" />
-              Browse Guides
-            </Button>
+            <a href="/wrenwood-complete-area-guide/">
+              <Button
+                size="lg"
+                className="bg-primary font-mono text-xs uppercase tracking-widest text-primary-foreground hover:bg-primary/85"
+              >
+                <Play className="size-4" />
+                Start Walkthrough
+              </Button>
+            </a>
+            <a href="/beginner-guide-resident-evil-requiem/">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-border bg-card/40 font-mono text-xs uppercase tracking-widest text-foreground hover:bg-secondary"
+              >
+                <BookOpen className="size-4" />
+                Browse Guides
+              </Button>
+            </a>
           </div>
 
           <dl className="mt-10 flex max-w-md divide-x divide-border border-y border-border">

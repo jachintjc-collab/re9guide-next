@@ -53,9 +53,11 @@ export function SiteHeader() {
           >
             <Search className="size-4" />
           </Button>
-          <Button className="hidden bg-primary font-mono text-xs uppercase tracking-widest text-primary-foreground hover:bg-primary/85 sm:inline-flex">
-            Start Survival
-          </Button>
+          <a href="/wrenwood-complete-area-guide/" className="hidden sm:inline-flex">
+            <Button className="bg-primary font-mono text-xs uppercase tracking-widest text-primary-foreground hover:bg-primary/85">
+              Start Survival
+            </Button>
+          </a>
           <Button
             variant="ghost"
             size="icon"
