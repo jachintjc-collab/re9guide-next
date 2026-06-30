@@ -22,6 +22,7 @@ const COLUMNS = [
   {
     title: "Info",
     links: [
+      { label: "All Guides Index", href: "/all-guides/" },
       { label: "About", href: "/about/" },
       { label: "Privacy Policy", href: "/privacy/" },
       { label: "Terms of Service", href: "/terms/" },

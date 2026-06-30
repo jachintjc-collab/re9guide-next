@@ -47,7 +47,7 @@ export function FeaturedGuides() {
           title="Editor's Survival Picks"
           description="Hand-selected deep dives that will keep you breathing through the worst the Requiem throws at you."
           action={
-            <a href="/tier-lists/">
+            <a href="/all-guides/">
               <Button
                 variant="outline"
                 className="border-border bg-card/40 font-mono text-xs uppercase tracking-widest hover:bg-secondary"

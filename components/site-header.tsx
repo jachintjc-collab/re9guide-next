@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button"
 
 const NAV = [
   { label: "Walkthroughs", href: "/wrenwood-complete-area-guide/" },
-  { label: "Tier List", href: "/best-weapons-tier-list/" },
+  { label: "Tier Lists", href: "/best-weapons-tier-list/" },
   { label: "Characters", href: "/character-eveline-deep-profile/" },
-  { label: "Maps", href: "/wrenwood-interactive-map/" },
+  { label: "All Guides", href: "/all-guides/" },
   { label: "About", href: "/about/" },
 ]
 
