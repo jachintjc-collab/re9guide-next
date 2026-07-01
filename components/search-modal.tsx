@@ -1,74 +1,88 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { Search as SearchIcon, X } from "lucide-react"
+import Fuse from "fuse.js"
 
-type SearchResult = {
-  url: string
-  meta?: { title?: string; image?: string }
-  excerpt: string
-  word_count?: number
+type Doc = {
+  s: string // slug
+  l: string // lang: 'en' | 'ko'
+  t: string // title
+  d: string // description
 }
 
-type PagefindSearchItem = {
-  id: string
-  data: () => Promise<SearchResult>
+type IndexData = {
+  docs: Doc[]
 }
 
-interface Pagefind {
-  search: (query: string) => Promise<{ results: PagefindSearchItem[] }>
-  init?: () => Promise<void>
-}
+// Cache index across modal opens
+let cachedIndex: Doc[] | null = null
+let cachedFuse: Fuse<Doc> | null = null
 
-declare global {
-  interface Window {
-    pagefind?: Pagefind
-    __pagefindLoading?: boolean
+async function loadIndex(): Promise<{ docs: Doc[]; fuse: Fuse<Doc> }> {
+  if (cachedIndex && cachedFuse) {
+    return { docs: cachedIndex, fuse: cachedFuse }
   }
+  const res = await fetch("/search-index.json")
+  if (!res.ok) throw new Error(`search-index.json ${res.status}`)
+  const data: IndexData = await res.json()
+  const fuse = new Fuse(data.docs, {
+    keys: [
+      { name: "t", weight: 2 }, // title heaviest
+      { name: "d", weight: 1 }, // description
+      { name: "s", weight: 1.2 }, // slug
+    ],
+    threshold: 0.35,
+    ignoreLocation: true,
+    includeScore: true,
+    minMatchCharLength: 2,
+  })
+  cachedIndex = data.docs
+  cachedFuse = fuse
+  return { docs: data.docs, fuse }
+}
+
+function docToUrl(d: Doc): string {
+  if (d.s === "") return "/"
+  if (d.l === "ko") {
+    return d.s.startsWith("ko/") ? `/${d.s}/` : `/ko/${d.s}/`
+  }
+  return `/${d.s}/`
 }
 
 export function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [query, setQuery] = useState("")
-  const [results, setResults] = useState<SearchResult[]>([])
+  const [results, setResults] = useState<Doc[]>([])
   const [loading, setLoading] = useState(false)
-  const [pagefindReady, setPagefindReady] = useState(false)
+  const [ready, setReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fuseRef = useRef<Fuse<Doc> | null>(null)
 
-  // Load pagefind on first open
+  // Load index on first open
   useEffect(() => {
-    if (!open || pagefindReady) return
-    if (window.pagefind) {
-      setPagefindReady(true)
+    if (!open || ready) return
+    if (cachedFuse) {
+      fuseRef.current = cachedFuse
+      setReady(true)
       return
     }
-    if (window.__pagefindLoading) return
-    window.__pagefindLoading = true
+    loadIndex()
+      .then(({ fuse }) => {
+        fuseRef.current = fuse
+        setReady(true)
+      })
+      .catch((e) => {
+        console.error("Search index load failed:", e)
+        setError("Search index not available. Try reloading the page.")
+      })
+  }, [open, ready])
 
-    ;(async () => {
-      try {
-        // @ts-expect-error dynamic import
-        const pf = (await import(/* webpackIgnore: true */ "/pagefind/pagefind.js")) as Pagefind
-        if (pf.init) await pf.init()
-        window.pagefind = pf
-        setPagefindReady(true)
-      } catch (e) {
-        setError(
-          "Search index not built yet. It becomes available after the first production deploy."
-        )
-        console.error("Pagefind load failed:", e)
-      } finally {
-        window.__pagefindLoading = false
-      }
-    })()
-  }, [open, pagefindReady])
-
-  // Focus input on open
+  // Focus input on open + reset on close
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50)
     } else {
-      // Reset state on close
       setQuery("")
       setResults([])
       setError(null)
@@ -77,25 +91,23 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
 
   // Debounced search
   useEffect(() => {
-    if (!query.trim() || !pagefindReady || !window.pagefind) {
+    if (!query.trim() || !fuseRef.current) {
       setResults([])
       return
     }
     setLoading(true)
-    const timer = setTimeout(async () => {
+    const timer = setTimeout(() => {
       try {
-        const search = await window.pagefind!.search(query)
-        const top10 = search.results.slice(0, 10)
-        const data = await Promise.all(top10.map((r) => r.data()))
-        setResults(data)
+        const matches = fuseRef.current!.search(query, { limit: 10 })
+        setResults(matches.map((m) => m.item))
       } catch (e) {
-        console.error("Search failed:", e)
+        console.error("Fuse search error:", e)
       } finally {
         setLoading(false)
       }
-    }, 200)
+    }, 150)
     return () => clearTimeout(timer)
-  }, [query, pagefindReady])
+  }, [query])
 
   // ESC to close
   useEffect(() => {
@@ -124,7 +136,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
             ref={inputRef}
             type="search"
             autoComplete="off"
-            placeholder="Search 900+ RE9 guides…"
+            placeholder="Search 962+ RE9 guides…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 bg-transparent font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground"
@@ -140,9 +152,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
         </div>
 
         {error && (
-          <div className="p-6 text-center font-mono text-xs text-muted-foreground">
-            {error}
-          </div>
+          <div className="p-6 text-center font-mono text-xs text-red-400">{error}</div>
         )}
 
         {!error && loading && (
@@ -156,30 +166,38 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
             {results.map((r, i) => (
               <li key={i}>
                 <a
-                  href={r.url}
+                  href={docToUrl(r)}
                   onClick={onClose}
                   className="block px-4 py-3 hover:bg-secondary"
                 >
-                  <div className="font-heading text-sm font-semibold text-foreground line-clamp-1">
-                    {r.meta?.title || r.url}
+                  <div className="flex items-baseline gap-2">
+                    <div className="font-heading text-sm font-semibold text-foreground line-clamp-1 flex-1">
+                      {r.t}
+                    </div>
+                    {r.l === "ko" && (
+                      <span className="shrink-0 rounded-sm border border-border bg-secondary px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+                        KO
+                      </span>
+                    )}
                   </div>
-                  <div
-                    className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground"
-                    dangerouslySetInnerHTML={{ __html: r.excerpt }}
-                  />
+                  {r.d && (
+                    <div className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                      {r.d}
+                    </div>
+                  )}
                 </a>
               </li>
             ))}
           </ul>
         )}
 
-        {!error && !loading && query && results.length === 0 && pagefindReady && (
+        {!error && !loading && query && results.length === 0 && ready && (
           <div className="p-8 text-center font-mono text-xs text-muted-foreground">
             No results for &ldquo;{query}&rdquo;
           </div>
         )}
 
-        {!error && !loading && !query && (
+        {!error && !loading && !query && ready && (
           <div className="p-6 text-xs text-muted-foreground">
             <p className="font-mono mb-3 text-[11px] uppercase tracking-widest text-primary">
               Try searching for
@@ -198,6 +216,12 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
                 )
               )}
             </div>
+          </div>
+        )}
+
+        {!error && !ready && (
+          <div className="p-8 text-center font-mono text-xs text-muted-foreground">
+            Loading index…
           </div>
         )}
       </div>
