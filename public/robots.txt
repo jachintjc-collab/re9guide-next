@@ -1,50 +1,32 @@
-# robots.txt for re9guide.it.com
-# Last updated: 2026-05-13
+# re9guide.it.com robots.txt
+# Generated 2026-07-01
 
 User-agent: *
 Allow: /
 
-# Block any AI training crawlers if you wish (optional, opt-in)
-# Uncomment lines below to opt out of AI training. Be aware these
-# crawlers are *not* the same as search-engine crawlers — blocking
-# them does NOT affect Google / Bing / Yandex / Naver indexing.
-#
-# User-agent: GPTBot
-# Disallow: /
-#
-# User-agent: ClaudeBot
-# Disallow: /
-#
-# User-agent: CCBot
-# Disallow: /
-#
-# User-agent: anthropic-ai
-# Disallow: /
-#
-# User-agent: Google-Extended
-# Disallow: /
-#
-# User-agent: PerplexityBot
-# Disallow: /
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
 
-# Allow search-engine crawlers full access (default behavior, made explicit)
-User-agent: Googlebot
-Allow: /
+User-agent: ChatGPT-User
+Disallow: /
 
-User-agent: Bingbot
-Allow: /
+User-agent: ClaudeBot
+Disallow: /
 
-User-agent: Yandex
-Allow: /
+User-agent: anthropic-ai
+Disallow: /
 
-User-agent: NaverBot
-Allow: /
+User-agent: CCBot
+Disallow: /
 
-User-agent: DuckDuckBot
-Allow: /
+User-agent: Google-Extended
+Disallow: /
 
-# Sitemap location
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
 Sitemap: https://www.re9guide.it.com/sitemap.xml
-
-# IndexNow key file location (Bing/Yandex IndexNow protocol)
-# https://www.re9guide.it.com/cebd0f739339490594ae3738f31b5ed0.txt
