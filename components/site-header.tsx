@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Biohazard, ChevronDown, Menu, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { SearchModal } from "@/components/search-modal"
 
 type NavChild = { label: string; href: string }
 type NavItem = { label: string; href: string; children?: NavChild[] }
@@ -64,8 +65,11 @@ const NAV: NavItem[] = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [mobileExpand, setMobileExpand] = useState<string | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   return (
+    <>
+    <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href="/" className="flex items-center gap-2.5">
@@ -118,6 +122,7 @@ export function SiteHeader() {
             size="icon"
             className="text-muted-foreground hover:text-foreground"
             aria-label="Search guides"
+            onClick={() => setSearchOpen(true)}
           >
             <Search className="size-4" />
           </Button>
@@ -188,5 +193,6 @@ export function SiteHeader() {
         </nav>
       )}
     </header>
+    </>
   )
 }

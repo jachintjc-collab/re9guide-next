@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "next build",
+    "postbuild": "pagefind --site out",
     "start": "next start",
     "lint": "eslint .",
     "sitemap": "node scripts/generate-sitemap.mjs"
@@ -29,6 +30,7 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "pagefind": "^1.4.0",
     "postcss": "^8.5",
     "shadcn": "^4.8.0",
     "tailwindcss": "^4.2.0",
