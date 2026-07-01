@@ -1,4 +1,16 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "redirects": [
+    {
+      "source": "/((?!video-script-|video-cutscene-|video-mr-x-pursuit-route|video-true-ending-checklist|soundtrack-|art-)[^/]+)\\.html",
+      "destination": "/$1/",
+      "permanent": true
+    },
+    {
+      "source": "/ko/((?!video-script-|video-cutscene-|video-mr-x-pursuit-route|video-true-ending-checklist|soundtrack-|art-)[^/]+)\\.html",
+      "destination": "/ko/$1/",
+      "permanent": true
+    }
+  ]
 }
