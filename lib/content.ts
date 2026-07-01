@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
-export type Lang = 'en' | 'ko' | 'ja' | 'zh'
+export type Lang = 'en' | 'ko'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content')
 
