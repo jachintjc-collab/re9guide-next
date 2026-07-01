@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-sitemap.mjs",
-    "build": "next build",
-    "postbuild": "pagefind --site out",
+    "build": "node scripts/generate-sitemap.mjs && next build && pagefind --site out",
     "start": "next start",
     "lint": "eslint .",
     "sitemap": "node scripts/generate-sitemap.mjs"
