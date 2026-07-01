@@ -143,6 +143,12 @@ export default function RootLayout({
               `}
             </Script>
 
+            {/* Cookie consent banner — EU/UK/CA GDPR + AdSense compliance */}
+            <Script
+              src="/cookie-consent.js"
+              strategy="afterInteractive"
+            />
+
             <Analytics />
           </>
         )}
